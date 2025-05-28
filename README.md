@@ -6,20 +6,26 @@ RemitAI is a proof-of-concept AI-powered remittance platform designed to simplif
 
 ```
 RemitAi/
-├── backend/         # FastAPI backend code (Python)
+├── backend/         # FastAPI backend code (Python 3.11)
 │   ├── api/
 │   ├── services/
 │   ├── main.py
-│   └── requirements.txt
-├── contracts/       # Soroban smart contracts (Rust)
+│   ├── requirements.txt
+│   └── venv/          # Virtual environment (created locally)
+├── contracts/       # Soroban smart contracts (Rust) - Not implemented in this phase
 │   ├── paymaster/
 │   ├── registry/
 │   └── smart_wallet/
 ├── frontend/        # React frontend code (TypeScript + Vite + TailwindCSS)
 │   ├── public/
 │   ├── src/
+│   ├── dist/          # Production build output (created locally)
+│   ├── node_modules/  # Dependencies (installed locally)
+│   ├── .env.development # Local environment config (created locally)
+│   ├── .env.production  # Production environment config
 │   ├── index.html
 │   ├── package.json
+│   ├── pnpm-lock.yaml # PNPM lock file
 │   ├── tsconfig.json
 │   └── vite.config.ts
 ├── .gitignore
@@ -28,83 +34,115 @@ RemitAi/
 └── README.md        # This file
 ```
 
-## Features
+## Features (Conceptual / Partially Implemented)
 
-*   **AI-Powered Interface:** Use voice or text commands in multiple languages to initiate transfers.
-*   **Smart Wallet:** Non-custodial smart contract wallet on Soroban.
-*   **Gas Abstraction:** Paymaster contract sponsors transaction fees.
-*   **Name Registry:** Human-readable usernames linked to wallet addresses.
-*   **Multi-Language Support:** NLP understands commands in English, Swahili, Yoruba, Hausa, Igbo, French, Arabic.
-*   **Security:** Includes 2FA, smart wallet backup, voice biometrics (mock), and fraud detection.
+*   **AI-Powered Interface:** Use voice or text commands (mock NLP service).
+*   **Smart Wallet:** Conceptual non-custodial wallet.
+*   **Gas Abstraction:** Conceptual Paymaster contract.
+*   **Name Registry:** Conceptual human-readable usernames.
+*   **Multi-Language Support:** Mock NLP service.
+*   **Security:** Includes mock 2FA, smart wallet backup guidance, mock voice biometrics, and mock fraud detection.
 *   **On/Off-Ramp:** Mock integration for buying/selling USDC.
 
-## Setup and Running
+## Setup and Running Locally
+
+These instructions guide you through setting up and running both the backend and frontend services on your local machine for development and testing.
 
 ### Prerequisites
 
-*   Node.js (v20 or later recommended)
-*   npm, yarn, or pnpm (pnpm is recommended as used during development)
-*   Python (v3.9 or later recommended for backend)
-*   Rust toolchain (for Soroban contracts)
+*   **Node.js:** v20.x recommended (Check with `node -v`).
+*   **pnpm:** Recommended package manager (Install via `npm install -g pnpm` if needed).
+*   **Python:** v3.11.x recommended (Check with `python --version` or `python3 --version`).
+*   **Git:** For cloning the repository.
 
-### Backend Setup (Placeholder - Details in `backend/README.md` if available)
+### 1. Clone the Repository
 
-1.  Navigate to the `backend` directory: `cd backend`
-2.  Create a virtual environment: `python -m venv venv`
-3.  Activate the virtual environment:
-    *   macOS/Linux: `source venv/bin/activate`
-    *   Windows: `venv\Scripts\activate`
-4.  Install dependencies: `pip install -r requirements.txt`
-5.  Configure environment variables (e.g., API keys, database connection) in a `.env` file.
-6.  Run the backend server: `uvicorn main:app --reload`
+```bash
+git clone https://github.com/C-ifegwu/RemitAi.git
+cd RemitAi
+```
 
-### Frontend Setup
+### 2. Setup and Run the Backend
 
-1.  Navigate to the `frontend` directory: `cd frontend`
-2.  Install dependencies (using pnpm is recommended):
+1.  **Navigate to the backend directory:**
+    ```bash
+    cd backend
+    ```
+2.  **Create and activate a Python virtual environment:**
+    ```bash
+    # Use python3.11 or your python3 command
+    python3.11 -m venv venv 
+    
+    # Activate the environment:
+    # macOS / Linux:
+    source venv/bin/activate
+    # Windows (Git Bash or WSL):
+    # source venv/Scripts/activate
+    # Windows (Command Prompt / PowerShell):
+    # venv\Scripts\activate.bat 
+    ```
+    *(You should see `(venv)` at the beginning of your terminal prompt)*
+
+3.  **Install backend dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+4.  **Run the backend server:**
+    ```bash
+    # This runs the FastAPI server using uvicorn
+    # It will listen on http://127.0.0.1:8000
+    # --reload enables auto-reloading on code changes
+    uvicorn main:app --host 127.0.0.1 --port 8000 --reload
+    ```
+    *Keep this terminal window open. The backend is now running.* You should see output indicating the server is running, like `Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)`.
+
+### 3. Setup and Run the Frontend
+
+*(Open a **new** terminal window/tab for these steps, leaving the backend running in the first one)*
+
+1.  **Navigate to the frontend directory:**
+    ```bash
+    # Make sure you are in the root RemitAi directory first
+    cd frontend 
+    ```
+2.  **Install frontend dependencies using pnpm:**
     ```bash
     pnpm install
     ```
-    *Alternatively, use npm or yarn:*
-    ```bash
-    # npm install
-    # or
-    # yarn install
-    ```
-3.  **Configure Backend API URL:**
-    *   Create a `.env.development` file in the `frontend` directory.
-    *   Add the following line, replacing the URL with your running backend server's address:
+3.  **Configure the backend API URL for local development:**
+    *   The file `.env.development` should already exist with the correct local backend URL:
         ```
-VITE_API_BASE_URL=http://localhost:8000/api/v1
+        VITE_API_BASE_URL=http://127.0.0.1:8000/api/v1
         ```
-    *   For production builds, ensure the `VITE_API_BASE_URL` is set correctly in your deployment environment or in a `.env.production` file.
+    *   Verify this file exists and contains the correct URL. If not, create it and add the line above. *Note: The backend runs on port 8000, and the API routes are under `/api/v1`.*
 
-4.  **Run the Frontend Development Server:**
+4.  **Run the frontend development server:**
     ```bash
     pnpm run dev
     ```
-    *Alternatively, use npm or yarn:*
-    ```bash
-    # npm run dev
-    # or
-    # yarn dev
-    ```
-5.  Open your browser and navigate to the URL provided (usually `http://localhost:5173`).
+5.  **Access the application:**
+    *   The terminal will output the local URL for the frontend, usually `http://localhost:5173`. 
+    *   Open this URL in your web browser.
 
-### Building for Production
+### Summary
+
+You should now have:
+*   The **backend** running in one terminal (accessible at `http://127.0.0.1:8000`).
+*   The **frontend** running in a second terminal (accessible at `http://localhost:5173` or similar).
+
+You can now interact with the RemitAI application in your browser, and the frontend will communicate with your local backend.
+
+### Building Frontend for Production
+
+If you need to create a static build of the frontend for deployment:
 
 1.  Navigate to the `frontend` directory: `cd frontend`
-2.  Run the build command:
+2.  Ensure your `.env.production` file has the correct `VITE_API_BASE_URL` for your *deployed* backend.
+3.  Run the build command:
     ```bash
     pnpm run build
     ```
-    *Alternatively, use npm or yarn:*
-    ```bash
-    # npm run build
-    # or
-    # yarn build
-    ```
-3.  The production-ready static files will be generated in the `frontend/dist` directory. Deploy these files to your preferred static hosting service (e.g., Vercel, Netlify, GitHub Pages).
+4.  The production-ready static files will be generated in the `frontend/dist` directory. Deploy these files to your preferred static hosting service.
 
 ## Contributing
 
