@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import BalanceCard from '../components/dashboard/BalanceCard';
+import VaultSummaryCard from '../components/dashboard/VaultSummaryCard';
 import ActionButton from '../components/common/ActionButton';
 import TransactionItem from '../components/transactions/TransactionItem';
 import { ArrowUpRightIcon, QrCodeIcon, BanknotesIcon, CreditCardIcon } from '@heroicons/react/24/outline';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useWallet } from '../contexts/WalletContext';
 import { useTransactions } from '../contexts/TransactionContext';
+import { useVault } from '../contexts/VaultContext';
 
 const Dashboard: React.FC = () => {
   const { balance, currency, fetchBalance } = useWallet();
   const { transactions, fetchTransactions } = useTransactions();
+  const { fetchVaults } = useVault();
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -19,7 +23,8 @@ const Dashboard: React.FC = () => {
       try {
         await Promise.all([
           fetchBalance(),
-          fetchTransactions()
+          fetchTransactions(),
+          fetchVaults()
         ]);
       } catch (error) {
         console.error('Error loading dashboard data:', error);
@@ -29,7 +34,11 @@ const Dashboard: React.FC = () => {
     };
 
     loadDashboardData();
-  }, [fetchBalance, fetchTransactions]);
+  }, [fetchBalance, fetchTransactions, fetchVaults]);
+
+  const handleVaultCardClick = () => {
+    navigate('/vault');
+  };
 
   return (
     <div className="space-y-6">
@@ -43,6 +52,9 @@ const Dashboard: React.FC = () => {
           lastUpdated="Today, 7:30 AM"
         />
       )}
+      
+      {/* Vault Summary Card */}
+      <VaultSummaryCard onClick={handleVaultCardClick} />
       
       {/* Quick Actions */}
       <section>
@@ -64,12 +76,14 @@ const Dashboard: React.FC = () => {
               color="secondary"
             />
           </Link>
-          <ActionButton 
-            icon={<BanknotesIcon className="h-6 w-6" />}
-            label="Add Money"
-            onClick={() => {}}
-            color="neutral"
-          />
+          <Link to="/vault">
+            <ActionButton 
+              icon={<BanknotesIcon className="h-6 w-6" />}
+              label="Savings Vault"
+              onClick={() => {}}
+              color="neutral"
+            />
+          </Link>
           <ActionButton 
             icon={<CreditCardIcon className="h-6 w-6" />}
             label="Virtual Card"

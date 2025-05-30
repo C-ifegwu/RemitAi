@@ -4,6 +4,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { TransactionProvider } from './contexts/TransactionContext';
 import { WalletProvider } from './contexts/WalletContext';
 import { NLPProvider } from './contexts/NLPContext';
+import { VaultProvider } from './contexts/VaultContext';
 
 // Layouts
 import MainLayout from './layouts/MainLayout';
@@ -19,6 +20,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import VerifyIdentity from './pages/VerifyIdentity';
 import NotFound from './pages/NotFound';
+import Vault from './pages/Vault';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -37,50 +39,57 @@ function App() {
     <AuthProvider>
       <TransactionProvider>
         <WalletProvider>
-          <NLPProvider>
-            <Router>
-              <Routes>
-                {/* Auth routes */}
-                <Route element={<AuthLayout />}>
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/verify" element={<VerifyIdentity />} />
-                </Route>
-                
-                {/* Main app routes - protected */}
-                <Route element={<MainLayout />}>
-                  <Route path="/" element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/send" element={
-                    <ProtectedRoute>
-                      <SendMoney />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/receive" element={
-                    <ProtectedRoute>
-                      <ReceiveMoney />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/history" element={
-                    <ProtectedRoute>
-                      <TransactionHistory />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/settings" element={
-                    <ProtectedRoute>
-                      <Settings />
-                    </ProtectedRoute>
-                  } />
-                </Route>
-                
-                {/* 404 route */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Router>
-          </NLPProvider>
+          <VaultProvider>
+            <NLPProvider>
+              <Router>
+                <Routes>
+                  {/* Auth routes */}
+                  <Route element={<AuthLayout />}>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/verify" element={<VerifyIdentity />} />
+                  </Route>
+                  
+                  {/* Main app routes - protected */}
+                  <Route element={<MainLayout />}>
+                    <Route path="/" element={
+                      <ProtectedRoute>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/send" element={
+                      <ProtectedRoute>
+                        <SendMoney />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/receive" element={
+                      <ProtectedRoute>
+                        <ReceiveMoney />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/history" element={
+                      <ProtectedRoute>
+                        <TransactionHistory />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/vault" element={
+                      <ProtectedRoute>
+                        <Vault />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/settings" element={
+                      <ProtectedRoute>
+                        <Settings />
+                      </ProtectedRoute>
+                    } />
+                  </Route>
+                  
+                  {/* 404 route */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Router>
+            </NLPProvider>
+          </VaultProvider>
         </WalletProvider>
       </TransactionProvider>
     </AuthProvider>

@@ -34,7 +34,7 @@ RemitAi/
 └── README.md        # This file
 ```
 
-## Features (Conceptual / Partially Implemented)
+## Features
 
 *   **AI-Powered Interface:** Use voice or text commands (mock NLP service).
 *   **Smart Wallet:** Conceptual non-custodial wallet.
@@ -43,6 +43,33 @@ RemitAi/
 *   **Multi-Language Support:** Mock NLP service.
 *   **Security:** Includes mock 2FA, smart wallet backup guidance, mock voice biometrics, and mock fraud detection.
 *   **On/Off-Ramp:** Mock integration for buying/selling USDC.
+*   **Vault Savings:** Protect local currency from depreciation by converting to USDC and locking for a specified period, earning yield while funds are locked.
+
+## Vault Savings Feature
+
+The Vault Savings feature allows users to protect their local currency from depreciation and inflation by:
+
+1. **Converting local currency to USDC:** When you deposit funds into a vault, your local currency (e.g., NGN, KES) is converted to USDC at the current exchange rate.
+2. **Time-locking your funds:** You choose how long to lock your funds (from 7 days to 1 year).
+3. **Earning yield:** While your funds are locked, you earn interest (simulated at 5% APY).
+4. **Withdrawing at current rates:** When the lock period ends, you can withdraw your funds, which are converted back to your local currency at the *current* exchange rate, protecting you from local currency depreciation.
+
+### Benefits
+
+* **Inflation Protection:** Shield your savings from local currency depreciation.
+* **Passive Income:** Earn yield while your funds are locked.
+* **Flexible Lock Periods:** Choose a timeframe that works for you (7 days to 1 year).
+* **Transparent Conversion:** See exactly how much USDC your local currency converts to.
+* **Automatic Unlocking:** Vaults automatically become available for withdrawal when the lock period ends.
+
+### How to Use
+
+1. Navigate to the Vault page from the dashboard or bottom navigation.
+2. Click "New Vault" to create a new savings vault.
+3. Select your local currency, enter the amount to save, and choose a lock duration.
+4. Review the details and click "Create Vault".
+5. Monitor your vault's status, including locked amount, yield earned, and unlock date.
+6. Once unlocked, withdraw your funds to receive the equivalent amount in your local currency at the current exchange rate.
 
 ## Setup and Running Locally
 
@@ -151,4 +178,3 @@ Please refer to the `CONTRIBUTING.md` file for guidelines.
 ## License
 
 This project is licensed under the MIT License - see the `LICENSE` file for details.
-

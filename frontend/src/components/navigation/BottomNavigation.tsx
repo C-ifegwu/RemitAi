@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { HomeIcon, ArrowUpRightIcon, QrCodeIcon, ClockIcon, UserIcon } from '@heroicons/react/24/outline';
+import { HomeIcon, ArrowUpRightIcon, QrCodeIcon, ClockIcon, UserIcon, BanknotesIcon } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
 
 const BottomNavigation: React.FC = () => {
@@ -10,6 +10,7 @@ const BottomNavigation: React.FC = () => {
     { path: '/', icon: HomeIcon, label: 'Home' },
     { path: '/send', icon: ArrowUpRightIcon, label: 'Send' },
     { path: '/receive', icon: QrCodeIcon, label: 'Receive' },
+    { path: '/vault', icon: BanknotesIcon, label: 'Vault' },
     { path: '/history', icon: ClockIcon, label: 'History' },
     { path: '/settings', icon: UserIcon, label: 'Profile' },
   ];
