@@ -178,3 +178,64 @@ Please refer to the `CONTRIBUTING.md` file for guidelines.
 ## License
 
 This project is licensed under the MIT License - see the `LICENSE` file for details.
+
+'''
+
+## Soroban Smart Contracts
+
+This project includes a suite of Soroban smart contracts written in Rust, designed to handle the core blockchain logic for RemitAI. These contracts are located in the `/contracts` directory.
+
+### Implemented Contracts
+
+*   **Smart Wallet (`contracts/smart_wallet/`):** Manages user balances (USDC), handles transfers, and integrates with other contracts. Includes basic ownership and access control.
+*   **Registry (`contracts/registry/`):** Maps human-readable usernames to Stellar addresses, allowing for easier user identification and interaction. Includes functions for registration and lookup.
+*   **Paymaster (`contracts/paymaster/`):** Implements logic for sponsoring transaction fees (gas abstraction) based on defined criteria (e.g., allowlisting specific users). Interacts with Soroban's fee sponsorship features.
+*   **Vault (`contracts/vault/`):** Handles time-locked USDC deposits, allowing users to save funds for a specified period and earn yield (calculated based on amount, duration, and APY).
+
+### Current Status
+
+*   **Implementation:** All four contracts have been implemented with their core logic.
+*   **Testing:** Unit tests have been written for each contract to verify core functionality and edge cases. These tests can be found in the `src/test.rs` file within each contract's directory.
+*   **Compilation:** All contracts have been successfully compiled to WASM binaries (`.wasm`), which are ready for deployment. The compiled binaries are located in the `target/wasm32-unknown-unknown/release/` subdirectory within each contract's folder (e.g., `contracts/smart_wallet/target/wasm32-unknown-unknown/release/smart_wallet.wasm`).
+*   **Deployment:** **The contracts are NOT yet deployed to the Soroban testnet.** Deployment was paused pending a funded source account.
+
+### Compiling the Contracts
+
+To compile the contracts yourself:
+
+1.  **Ensure Rust and Soroban CLI are installed:** Follow the setup instructions at [https://soroban.stellar.org/docs/getting-started/setup](https://soroban.stellar.org/docs/getting-started/setup).
+2.  **Install WASM target:** `rustup target add wasm32-unknown-unknown`
+3.  **Navigate to each contract directory and build:**
+    ```bash
+    cd contracts/smart_wallet/contracts/smart_wallet
+    cargo build --target wasm32-unknown-unknown --release
+
+    cd ../../registry/contracts/registry
+    cargo build --target wasm32-unknown-unknown --release
+
+    cd ../../paymaster/contracts/paymaster
+    cargo build --target wasm32-unknown-unknown --release
+
+    cd ../../vault/contracts/vault
+    cargo build --target wasm32-unknown-unknown --release
+    ```
+
+### Deploying the Contracts (Next Steps)
+
+Deployment to the Soroban testnet requires a funded testnet account (source account) to cover deployment fees.
+
+1.  **Obtain a funded testnet account:** Use the Stellar Laboratory ([https://laboratory.stellar.org/](https://laboratory.stellar.org/)) or other testnet faucets.
+2.  **Deploy each contract using the Stellar CLI:**
+    ```bash
+    # Example for Smart Wallet (replace <YOUR_SECRET_KEY>)
+    stellar contract deploy \
+      --wasm target/wasm32-unknown-unknown/release/smart_wallet.wasm \
+      --source-account <YOUR_SECRET_KEY> \
+      --network testnet
+
+    # Repeat for registry.wasm, paymaster.wasm, and vault.wasm
+    ```
+3.  **Record the Contract IDs:** After each successful deployment, the CLI will output a Contract ID (starting with 'C...'). These IDs are needed for the backend to interact with the deployed contracts.
+
+**Note:** The backend service (`backend/services/`) will need to be updated to use these deployed contract IDs and interact with the live testnet contracts instead of the current mocked logic.
+'''
